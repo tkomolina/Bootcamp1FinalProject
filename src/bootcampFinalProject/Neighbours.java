@@ -1,5 +1,7 @@
 package bootcampFinalProject;
 
+import java.util.ArrayList;
+
 public class Neighbours {
 
 	private String name;
@@ -17,6 +19,7 @@ public class Neighbours {
 	private static final int MAX_VALUE_HUNGER = 100;
 	private static final int MIN_VALUE_HUNGER = 0;
 	private static final int DEFAULT_CAKE_AMOUNT = 0;
+	private static final int MIN_CAKE_AMOUNT = 0;
 
 	public Neighbours(String name, int age, int health, int happiness,
 			int hunger, int cakeAmount) {
@@ -31,6 +34,12 @@ public class Neighbours {
 		this.happiness = happiness;
 		this.hunger = hunger;
 		this.cakeAmount = cakeAmount;
+		if (cakeAmount >= MIN_CAKE_AMOUNT) {
+			this.cakeAmount = cakeAmount;
+		} else {
+			this.cakeAmount = MIN_CAKE_AMOUNT;
+			System.out.println("Cake amount is set to 0");
+		}
 	}
 
 	public Neighbours(String name, int age) {
@@ -52,6 +61,10 @@ public class Neighbours {
 
 	public int getHappiness() {
 		return happiness;
+	}
+
+	public void setHappiness(int happiness) {
+		this.happiness = happiness;
 	}
 
 	public int getHunger() {
@@ -204,7 +217,7 @@ public class Neighbours {
 				this.health = MIN_VALUE_HEALTH;
 			}
 		} else {
-			System.out.println("Hunger amount to add must be positive");
+			System.out.println("Hunger amount to remove must be positive");
 		}
 	}
 
@@ -270,7 +283,8 @@ public class Neighbours {
 
 	public void fight(Neighbours other, int minutes) {
 		if (this.isAlive() && other.isAlive()) {
-			System.out.println(this.name + " had a fight with " + other.name + " for " + minutes + " minutes.");
+			System.out.println(this.name + " had a fight with " + other.name
+					+ " for " + minutes + " minutes.");
 			this.addHunger(minutes);
 			this.removeHappiness(minutes);
 			this.removeHealth(minutes);
@@ -283,34 +297,74 @@ public class Neighbours {
 			System.out.println(name + " is already dead");
 		}
 	}
-	
-	public void giveCakeToNeighbour(Neighbours other){
+
+	public void giveCakeToNeighbour(Neighbours other) {
 		if (this.isAlive() && other.isAlive()) {
-			if (this.cakeAmount>0){
-			this.cakeAmount--;
-			other.removeHunger(CAKE_VALUE);
-			System.out.println(this.name + " has given cake to " + other.name);
-			other.info();
-			}else{
+			if (this.cakeAmount > 0) {
+				this.cakeAmount--;
+				other.removeHunger(CAKE_VALUE);
+				System.out.println(this.name + " has given cake to "
+						+ other.name);
+				other.info();
+			} else {
 				System.out.println(this.name + " has no cake");
 			}
-			
-		}else {
+
+		} else {
 			System.out.println(name + " is already dead");
 		}
 	}
-	
-	public void dinnerWithNeighbour(Neighbours other, int mealSize){
+
+	public void dinnerWithNeighbour(Neighbours other, int mealSize) {
 		if (this.isAlive() && other.isAlive()) {
 			if (mealSize > 0) {
 				this.removeHunger(mealSize);
 				other.removeHunger(mealSize);
-				System.out.println("Neighbours " + this.name + " and " + other.name+
-						 " have eaten dinner.\n Current hunger for " +this.name +" is "+ this.hunger + ". Current hunger for " +other.name +" is "+ other.hunger);
+				System.out.println("Neighbours " + this.name + " and "
+						+ other.name
+						+ " have eaten dinner.\n Current hunger for "
+						+ this.name + " is " + this.hunger
+						+ ". Current hunger for " + other.name + " is "
+						+ other.hunger);
 			} else {
 				System.out.println("Meal size must be positive");
 			}
-		}else {
+		} else {
+			System.out.println(name + " is already dead");
+		}
+	}
+
+	public void birthdayParty(ArrayList<Neighbours> list) {
+		if (isAlive()) {
+			
+			if (this.cakeAmount > 0) {
+				int partyPeopleAmount = 0;
+				for (int i = 0; i < list.size(); i++) {
+					if (list.get(i).isAlive()) {
+						partyPeopleAmount++;
+					}
+				}
+				for (int i = 0; i < list.size(); i++) {
+					if (list.get(i).isAlive()) {
+						list.get(i).setHappiness(100);
+						list.get(i).removeHealth(20);
+						list.get(i)
+								.removeHunger(CAKE_VALUE / partyPeopleAmount);
+					}
+				}
+				this.cakeAmount--;
+				this.addAge();
+				System.out.println("neighbours just had a party");
+				for (int i = 0; i < list.size(); i++) {
+					list.get(i).info();
+				}
+			} else {
+				System.out.println("Cake amount is: " + this.cakeAmount
+						+ ". Neighbour " + this.name
+						+ " needs to bake a cake to start a party");
+				
+			}
+		} else {
 			System.out.println(name + " is already dead");
 		}
 	}
@@ -321,7 +375,7 @@ public class Neighbours {
 				+ ", hunger=" + hunger + ", cakeAmount=" + cakeAmount + "]");
 
 	}
-	
+
 	public static Neighbours getNeighbour(String name, int age) {
 		return new Neighbours(name, age);
 	}
