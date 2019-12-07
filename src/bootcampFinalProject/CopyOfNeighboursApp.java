@@ -3,7 +3,7 @@ package bootcampFinalProject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class NeighboursApp {
+public class CopyOfNeighboursApp {
 
 	static Scanner input = new Scanner(System.in);
 	static ArrayList<Neighbours> neighbourList = new ArrayList<>();
@@ -15,31 +15,31 @@ public class NeighboursApp {
 		neighbourList.add(Neighbours.getNeighbour("Carlos", 35));
 		System.out.println("Welcome to Wisteria Lane!");
 
-		String option = "";
-		while (!option.equals("q")) {
+		int option = 999;
+		while (option!=99) {
 			if (selectedNeighbour == null) {
 				System.out.println("");
 				System.out.println("Please select your option:");
-				System.out.println("[l] - list neighbours' names ");
-				System.out.println("[a] - add a new neighbour");
+				System.out.println("[11] - list neighbours' names ");
+				System.out.println("[33] - add a new neighbour");
 				System.out.println("[1] - select a neighbour by name");
-				System.out.println("[q] - quit the program");
+				System.out.println("[99] - quit the program");
 				System.out.println("");
 
-				if (input.hasNext())
-					option = input.nextLine();
+				if (input.hasNextInt())
+					option = input.nextInt();
 
 				switch (option) {
-				case "l":
+				case 11:
 					listNames();
 					break;
-				case "a":
+				case 33:
 					addNeighbour();
 					break;
-				case "1":
+				case 1:
 					selectName();
 					break;
-				case "q":
+				case 99:
 					System.out.println("You've exited the application");
 					break;
 				default:
@@ -48,9 +48,9 @@ public class NeighboursApp {
 			} else {
 				System.out.println("");
 				System.out.println("Please select your option:");
-				System.out.println("[l] - list neighbours' names ");
-				System.out.println("[a] - add a new neighbour");
-				System.out.println("[c] - change selected neighbour");
+				System.out.println("[11] - list neighbours' names ");
+				System.out.println("[33] - add a new neighbour");
+				System.out.println("[22] - change selected neighbour");
 				System.out.println("[2] - change name for "
 						+ selectedNeighbour.getName());
 				System.out.println("[3] - bake a cake");
@@ -61,47 +61,47 @@ public class NeighboursApp {
 				System.out.println("[8] - have dinner with another neighbour");
 				System.out.println("[9] - have a birthday party");
 
-				System.out.println("[q] - quit the program");
+				System.out.println("[99] - quit the program");
 				System.out.println("");
 
-				if (input.hasNext())
-					option = input.nextLine();
+				if (input.hasNextInt())
+					option = input.nextInt();
 
 				switch (option) {
-				case "l":
+				case 11:
 					listNames();
 					break;
-				case "a":
+				case 33:
 					addNeighbour();
 					break;
-				case "c":
+				case 22:
 					selectName();
 					break;
-				case "2":
+				case 2:
 					changeName();
 					break;
-				case "3":
+				case 3:
 					selectedNeighbour.bakeCake();
 					break;
-				case "4":
+				case 4:
 					watchTV();
 					break;
-				case "5":
+				case 5:
 					eatDinner();
 					break;
-				case "6":
+				case 6:
 					fightWithNeighbour();
 					break;
-				case "7":
+				case 7:
 					giveCake();
 					break;
-				case "8":
+				case 8:
 					dinnerWithNeighbour();
 					break;
-				case "9":
+				case 9:
 					selectedNeighbour.birthdayParty(neighbourList);
 					break;
-				case "q":
+				case 99:
 					System.out.println("You've exited the application");
 					break;
 				default:
@@ -122,14 +122,9 @@ public class NeighboursApp {
 		listNames();
 		System.out.println("Choose neighbour's name");
 		String name = input.nextLine();
-		if (findByName(name) == null) {
-			System.out.println("Neighbour not found");
-		} else {
-			selectedNeighbour = findByName(name);
-			System.out.println("Name " + name
-					+ " has been sucessfully selected.");
-			selectedNeighbour.info();
-		}
+		selectedNeighbour = findByName(name);
+		System.out.println("Name " + name + " has been sucessfully selected.");
+		selectedNeighbour.info();
 	}
 
 	public static void changeName() {
@@ -146,7 +141,6 @@ public class NeighboursApp {
 		} else {
 			System.out.println("Invalid input");
 		}
-		input.nextLine();
 
 	}
 
@@ -158,7 +152,6 @@ public class NeighboursApp {
 		} else {
 			System.out.println("Invalid input");
 		}
-		input.nextLine();
 	}
 
 	public static void fightWithNeighbour() {
@@ -169,21 +162,16 @@ public class NeighboursApp {
 		if (findByName(otherNeighbour) == null) {
 			System.out.println("Neighbour not found");
 		} else {
-			if (selectedNeighbour == findByName(otherNeighbour)) {
-				System.out.println("You cannot fight with yourself");
-			} else {
-				System.out.println("For how long will they fight?");
-				if (input.hasNextInt()) {
-					int minutes = input.nextInt();
-					selectedNeighbour
-							.fight(findByName(otherNeighbour), minutes);
-				} else {
-					System.out.println("Invalid input");
-				}
-				input.nextLine();
-			}
-		}
 
+			System.out.println("For how long will they fight?");
+			if (input.hasNextInt()) {
+				int minutes = input.nextInt();
+				selectedNeighbour.fight(findByName(otherNeighbour), minutes);
+			} else {
+				System.out.println("Invalid input");
+			}
+
+		}
 	}
 
 	public static void giveCake() {
@@ -194,12 +182,8 @@ public class NeighboursApp {
 		if (findByName(otherNeighbour) == null) {
 			System.out.println("Neighbour not found");
 		} else {
-			if (selectedNeighbour == findByName(otherNeighbour)) {
-				System.out.println("You cannot give cake to yourself");
-			} else {
-				selectedNeighbour
-						.giveCakeToNeighbour(findByName(otherNeighbour));
-			}
+			selectedNeighbour.giveCakeToNeighbour(findByName(otherNeighbour));
+
 		}
 	}
 
@@ -211,21 +195,15 @@ public class NeighboursApp {
 		if (findByName(otherNeighbour) == null) {
 			System.out.println("Neighbour not found");
 		} else {
-			if (selectedNeighbour == findByName(otherNeighbour)) {
-				System.out.println("You cannot have dinner with yourself");
+			System.out.println("How much will they eat?");
+			if (input.hasNextInt()) {
+				int mealSize = input.nextInt();
+				selectedNeighbour.dinnerWithNeighbour(
+						findByName(otherNeighbour), mealSize);
 			} else {
-				System.out.println("How much will they eat?");
-				if (input.hasNextInt()) {
-					int mealSize = input.nextInt();
-					selectedNeighbour.dinnerWithNeighbour(
-							findByName(otherNeighbour), mealSize);
-				} else {
-					System.out.println("Invalid input");
-				}
-				input.nextLine();
+				System.out.println("Invalid input");
 			}
 		}
-
 	}
 
 	public static void addNeighbour() {
@@ -235,7 +213,6 @@ public class NeighboursApp {
 			System.out.println("Enter age");
 			if (input.hasNextInt()) {
 				int newAge = input.nextInt();
-				input.nextLine();
 				Neighbours addedNeighbour = new Neighbours(newNeighbour, newAge);
 				neighbourList.add(addedNeighbour);
 				System.out.println("Neighbour " + addedNeighbour.getName()
